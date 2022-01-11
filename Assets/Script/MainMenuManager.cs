@@ -30,12 +30,12 @@ public class MainMenuManager : MonoBehaviour
 
     public void SinglePlayerButton() {
         GameData.instance.isSinglePlayer = true;
-        HTPPanel.gameObject.SetActive(true);
+        TimerPanel.gameObject.SetActive(true);
     }
     public void MultiPlayerButton()
     {
         GameData.instance.isSinglePlayer = false;
-        HTPPanel.gameObject.SetActive(true);
+        TimerPanel.gameObject.SetActive(true);
     }
 
     public void ClosePanelHTP() {
@@ -46,13 +46,14 @@ public class MainMenuManager : MonoBehaviour
         TimerPanel.SetActive(false);
     }
 
-    public void NextButton() {
-        HTPPanel.SetActive(false);
-        TimerPanel.SetActive(true);
+    public void StartBtn() {
+        SceneManager.LoadScene("2. Gameplay");
     }
 
     public void SetTimerButton(float Timer) {
         GameData.instance.gameTimer = Timer;
-        SceneManager.LoadScene("2. Gameplay");
+        HTPPanel.SetActive(true);
+        TimerPanel.SetActive(false);
+       
     }
 }

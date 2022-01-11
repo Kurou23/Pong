@@ -22,15 +22,25 @@ public class Racket : MonoBehaviour
 
 
         // Biar Gk Keluar Batas Atas
-        if (transform.position.y > 2.9f )
+        if (transform.position.y > 1f )
         {
-            transform.position = new Vector2(transform.position.x, 2.9f);
+            transform.position = new Vector2(transform.position.x, 1f);
         }
 
         // Biar Gk Kelua Batas Bawah
-        if (transform.position.y < -2.9f)
+        if (transform.position.y < -1f)
         {
-            transform.position = new Vector2(transform.position.x, -2.9f);
+            transform.position = new Vector2(transform.position.x, -1f);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "Ball")
+        {
+            Debug.Log("Hit");
+            gameObject.GetComponent<Animator>().SetTrigger("Shoot");
+
         }
     }
 }
