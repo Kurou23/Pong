@@ -31,29 +31,34 @@ public class MainMenuManager : MonoBehaviour
     public void SinglePlayerButton() {
         GameData.instance.isSinglePlayer = true;
         TimerPanel.gameObject.SetActive(true);
+        SoundManager.instance.UIClickSfx();
     }
     public void MultiPlayerButton()
     {
         GameData.instance.isSinglePlayer = false;
         TimerPanel.gameObject.SetActive(true);
+        SoundManager.instance.UIClickSfx();
     }
 
     public void ClosePanelHTP() {
         HTPPanel.SetActive(false);
+        SoundManager.instance.UIClickSfx();
     }
 
     public void CloseTimerPanel() {
         TimerPanel.SetActive(false);
+        SoundManager.instance.UIClickSfx();
     }
 
     public void StartBtn() {
         SceneManager.LoadScene("2. Gameplay");
+        SoundManager.instance.UIClickSfx();
     }
 
     public void SetTimerButton(float Timer) {
         GameData.instance.gameTimer = Timer;
         HTPPanel.SetActive(true);
         TimerPanel.SetActive(false);
-       
+        SoundManager.instance.UIClickSfx();
     }
 }

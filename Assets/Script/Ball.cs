@@ -7,6 +7,8 @@ public class Ball : MonoBehaviour
     public Rigidbody2D rb;
     public float speed;
     public bool isBounce;
+    public bool bonusGoal;
+    public bool isLastHit1;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +40,7 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
+        SoundManager.instance.BallBounceSfx();
         if (col.gameObject.tag == "RacketLeft" && !isBounce)
         {
             float y = hitFactor(transform.position, col.transform.position, col.collider.bounds.size.y);
@@ -45,6 +48,7 @@ public class Ball : MonoBehaviour
             Vector2 dir = new Vector2(1, y).normalized;
             rb.velocity = dir * speed;
             StartCoroutine("DelayBounce");
+            isLastHit1 = true;
         }
 
         if (col.gameObject.tag == "RacketRight" && !isBounce)
@@ -54,6 +58,7 @@ public class Ball : MonoBehaviour
             Vector2 dir = new Vector2(-1, y).normalized;
             rb.velocity = dir * speed;
             StartCoroutine("DelayBounce");
+            isLastHit1 = false;
         }
     }
 
@@ -61,7 +66,12 @@ public class Ball : MonoBehaviour
     {
         if (col.gameObject.tag == "Goal 1")
         {
+            SoundManager.instance.GoalSfx();
             GameManager.instance.player2Score++;
+            if (bonusGoal)
+            {
+                GameManager.instance.player2Score++;
+            }
             GameManager.instance.SpwanBall();
             Destroy(gameObject);
             if (GameManager.instance.goldenGoal)
@@ -72,7 +82,12 @@ public class Ball : MonoBehaviour
 
         if (col.gameObject.tag == "Goal 2")
         {
+            SoundManager.instance.GoalSfx();
             GameManager.instance.player1Score++;
+            if (bonusGoal)
+            {
+                GameManager.instance.player2Score++;
+            }
             GameManager.instance.SpwanBall();
             Destroy(gameObject);
             if (GameManager.instance.goldenGoal)

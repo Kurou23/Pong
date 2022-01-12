@@ -7,7 +7,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
+    //Deklarasi tipe data dan variabel
     [Header("Game Settings")]
     public float delayStart;
     public int player1Score;
@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public bool isOver;
     public bool goldenGoal;
     public GameObject Ball;
+    public GameObject[] PowerUp;
 
     [Header("Panels")]
     public GameObject PausePanel;
@@ -41,7 +42,6 @@ public class GameManager : MonoBehaviour
             instance = this;
     }
 
-
     private void Start()
     {
         PausePanel.SetActive(false);
@@ -58,6 +58,8 @@ public class GameManager : MonoBehaviour
         timer = GameData.instance.gameTimer;
         isOver = false;
         goldenGoal = false;
+
+        StartCoroutine("SpawnPowerUp");
     }
 
     private void Update()
@@ -109,25 +111,37 @@ public class GameManager : MonoBehaviour
         StartCoroutine("DelaySpawn");
     }
 
+    public IEnumerator SpawnPowerUp() {
+        yield return new WaitForSeconds(10f);
+        Debug.Log("Power Up");
+        int rand = Random.Range(0,PowerUp.Length-1);
+        Instantiate(PowerUp[rand], new Vector3(Random.Range(-3.2f, 3.2f), Random.Range(-2.35f, 2.25f),0), Quaternion.identity);
+        StartCoroutine("SpawnPowerUp");
+    }
+
     public void PauseGame()
     {
         Time.timeScale = 0;
         PausePanel.SetActive(true);
+        SoundManager.instance.UIClickSfx();
     }
 
     public void ResumeGame()
     {
         PausePanel.SetActive(false);
         Time.timeScale = 1;
+        SoundManager.instance.UIClickSfx();
     }
 
     public void BackToMenu()
     {
         SceneManager.LoadScene("1. Main Menu");
+        SoundManager.instance.UIClickSfx();
     }
 
     public void GameOver()
     {
+        SoundManager.instance.GameOverSfx();
         isOver = true;
         Debug.Log("Game Over");
         Time.timeScale = 0;
@@ -160,6 +174,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        SoundManager.instance.UIClickSfx();
         Time.timeScale = 1f;
 
         // Destroy Semua bola di lapangan
