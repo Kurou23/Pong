@@ -86,7 +86,7 @@ public class Ball : MonoBehaviour
             GameManager.instance.player1Score++;
             if (bonusGoal)
             {
-                GameManager.instance.player2Score++;
+                GameManager.instance.player1Score++;
             }
             GameManager.instance.SpwanBall();
             Destroy(gameObject);

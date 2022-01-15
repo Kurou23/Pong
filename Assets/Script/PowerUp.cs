@@ -16,18 +16,19 @@ public class PowerUp : MonoBehaviour
 
             if (namePowerUp == "SpeedUp")
             {
-                col.GetComponent<Ball>().speed *= 2f;
+                Ball ball = col.GetComponent<Ball>();
+                ball.speed *= 2f;
             }
 
-            if (namePowerUp == "SpeedUp")
+            if (namePowerUp == "ChangeDirection")
             {
                 Ball ball =  col.GetComponent<Ball>();
                 if (ball.isLastHit1)
                 {
-                    ball.GetComponent<Rigidbody2D>().velocity = new Vector2(1,Random.Range(-1,1));
+                    ball.GetComponent<Rigidbody2D>().velocity = new Vector2(1,Random.Range(-1,1)) * ball.speed;
                 }
                 else {
-                    ball.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, Random.Range(-1, 1));
+                    ball.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, Random.Range(-1, 1)) * ball.speed;
                 }
             }
 

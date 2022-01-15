@@ -15,8 +15,10 @@ public class GameManager : MonoBehaviour
     public float timer;
     public bool isOver;
     public bool goldenGoal;
-    public GameObject Ball;
-    public GameObject[] PowerUp;
+    public bool isSpawnPowerUp;
+    public GameObject ballPrefab;
+    public GameObject[] powerUp;
+    public GameObject ballSpawned;
 
     [Header("Panels")]
     public GameObject PausePanel;
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
         PausePanel.SetActive(false);
         GameOverPanel.SetActive(false);
 
@@ -59,7 +62,6 @@ public class GameManager : MonoBehaviour
         isOver = false;
         goldenGoal = false;
 
-        StartCoroutine("SpawnPowerUp");
     }
 
     private void Update()
@@ -72,6 +74,12 @@ public class GameManager : MonoBehaviour
             float minutes = Mathf.FloorToInt(timer / 60);
             float seconds = Mathf.FloorToInt(timer % 60);
             timerTxt.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+
+            if (seconds % 20 == 0 && !isSpawnPowerUp)
+            {
+                StartCoroutine("SpawnPowerUp");
+            }
+
         }
         if (timer <= 0f && !isOver)
         {
@@ -103,7 +111,14 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        Instantiate(Ball, Vector3.zero, Quaternion.identity);
+        if (ballSpawned = null)
+        {
+            ballSpawned = Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
+        }
+        else {
+            Destroy(ballSpawned);
+            ballSpawned = Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
+        }   
     }
 
     public void SpwanBall()
@@ -112,11 +127,12 @@ public class GameManager : MonoBehaviour
     }
 
     public IEnumerator SpawnPowerUp() {
-        yield return new WaitForSeconds(10f);
+        isSpawnPowerUp = true;
         Debug.Log("Power Up");
-        int rand = Random.Range(0,PowerUp.Length-1);
-        Instantiate(PowerUp[rand], new Vector3(Random.Range(-3.2f, 3.2f), Random.Range(-2.35f, 2.25f),0), Quaternion.identity);
-        StartCoroutine("SpawnPowerUp");
+        int rand = Random.Range(0,powerUp.Length);
+        Instantiate(powerUp[rand], new Vector3(Random.Range(-3.2f, 3.2f), Random.Range(-2.35f, 2.25f),0), Quaternion.identity);
+        yield return new WaitForSeconds(1);
+        isSpawnPowerUp = false;
     }
 
     public void PauseGame()
@@ -135,6 +151,7 @@ public class GameManager : MonoBehaviour
 
     public void BackToMenu()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("1. Main Menu");
         SoundManager.instance.UIClickSfx();
     }
@@ -174,32 +191,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        SoundManager.instance.UIClickSfx();
-        Time.timeScale = 1f;
-
-        // Destroy Semua bola di lapangan
-        Ball[] ball = FindObjectsOfType<Ball>();
-        for (int i = 0; i < ball.Length; i++)
-        {
-            Destroy(ball[i].gameObject);
-        }
-
-        PausePanel.SetActive(false);
-        GameOverPanel.SetActive(false);
-
-        player2WinUI.SetActive(false);
-        player1WinUI.SetActive(false);
-        youWin.SetActive(false);
-        youLose.SetActive(false);
-        goldenGoalUI.SetActive(false);
-
-        // Manggil Function yg Pake IEnumerator harus pake Start Coroutine kalo gk kga bakal jalan
-        StartCoroutine("DelayStart", delayStart);
-        timer = GameData.instance.gameTimer;
-        isOver = false;
-        goldenGoal = false;
-        player1Score = 0;
-        player2Score = 0;
+        SceneManager.LoadScene("2. Gameplay");
     }
 
     // Buat bikin Delay Start
@@ -213,6 +205,10 @@ public class GameManager : MonoBehaviour
     private IEnumerator DelaySpawn()
     {
         yield return new WaitForSeconds(3);
-        Instantiate(Ball, Vector3.zero, Quaternion.identity);
+        if (ballSpawned == null)
+        {
+            ballSpawned = Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
+        }
+     
     }
 }
