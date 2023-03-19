@@ -61,4 +61,5 @@ public class MainMenuManager : MonoBehaviour
         TimerPanel.SetActive(false);
         SoundManager.instance.UIClickSfx();
     }
+
 }

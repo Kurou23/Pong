@@ -3807,6 +3807,7 @@ MonoBehaviour:
   ballBounce: {fileID: 8300000, guid: 2a2a4be7f84fa8d42a7fbdc625fc7076, type: 3}
   goal: {fileID: 8300000, guid: 0c88dcc920eea2640a284170387ced6f, type: 3}
   gameOver: {fileID: 8300000, guid: ac2f9b51ffeff9446b8c8db7f0d99304, type: 3}
+  BGM: {fileID: 1979614241}
 --- !u!82 &1875778417
 AudioSource:
   m_ObjectHideFlags: 0

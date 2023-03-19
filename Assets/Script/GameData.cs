@@ -9,6 +9,7 @@ public class GameData : MonoBehaviour
 
     public bool isSinglePlayer;
     public float gameTimer;
+    public bool isMute;
 
     private void Awake()
     {
@@ -18,6 +19,6 @@ public class GameData : MonoBehaviour
             instance = this;
 
         DontDestroyOnLoad(gameObject);
-        SceneManager.LoadScene("1. Main Menu");
+        //SceneManager.LoadScene("1. Main Menu");
     }
 }
